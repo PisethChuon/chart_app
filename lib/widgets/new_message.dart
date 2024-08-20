@@ -45,6 +45,7 @@ class _NewMessageState extends State<NewMessage> {
               decoration: const InputDecoration(labelText: 'Send a message...'),
             ),
           ),
+          // Submit Buttom
           IconButton(
             color: Theme.of(context).colorScheme.primary,
             onPressed: _submitMessage,
