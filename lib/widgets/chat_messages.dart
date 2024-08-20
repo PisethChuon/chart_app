@@ -7,11 +7,29 @@ class ChatMessages extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('chat').snapshots(), 
-     builder: builder)
-    
-    return const Center(
-      child: Text('No messages found.'),
+      stream: FirebaseFirestore.instance.collection('chat').snapshots(),
+      builder: (ctx, chatSnapshots) {
+        // Spinnin loading
+        if (chatSnapshots.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        // Message display if no send message
+        if (!chatSnapshots.hasData || chatSnapshots.data!.docs.isEmpty) {
+          return const Center(
+            child: Text('No messages found.'),
+          );
+        }
+        // Error message
+        if (chatSnapshots.hasError) {
+          return const Center(
+            child: Text('Someting went wrong....'),
+          );
+        }
+
+        return ListView.builder(itemBuilder: itemBuilder);
+      },
     );
   }
 }
